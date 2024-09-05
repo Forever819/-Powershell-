@@ -1,40 +1,40 @@
-#½Å±¾ÊÊÓÃÓÚ±Ê¼Ç±¾µÈÊ¹ÓÃWiFi·ÃÎÊĞ£Ô°ÍøµÄÉè±¸
+#è„šæœ¬é€‚ç”¨äºç¬”è®°æœ¬ç­‰ä½¿ç”¨WiFiè®¿é—®æ ¡å›­ç½‘çš„è®¾å¤‡
 
-#±¾½Å±¾²Î¿¼ÏÂÃæÁ´½ÓÊµÏÖ -Kunn
+#æœ¬è„šæœ¬å‚è€ƒä¸‹é¢é“¾æ¥å®ç° -Kunn
 # https://gist.github.com/binsee/4dfddb6b1be2803396250b7772056f1c
 # https://www.bilibili.com/read/cv26752901/
 
-#¸ĞĞ» ChandlerAi
+#æ„Ÿè°¢ ChandlerAi
 
-# ÅäÖÃÇø
-# ĞŞ¸ÄÒÔÏÂÄÚÈİ
-$YourID = "" # Ñ§ºÅ
-$Password = "" # ÃÜÂë
-$YourISP = "" # ISP
-# Ğ£Ô°ÍøÇëÁô¿Õ
-# ÖĞ¹úÒÆ¶¯ unicom
-# ÖĞ¹úÁªÍ¨ cmcc
-# ÖĞ¹úµçĞÅ telecom
-$JumpIP = "10.1.1.1" # ·ÇÈÏÖ¤·şÎñÆ÷µØÖ· 
+# é…ç½®åŒº
+# ä¿®æ”¹ä»¥ä¸‹å†…å®¹
+$YourID = "YourID" # å­¦å·
+$Password = "YourPassword" # å¯†ç 
+$YourISP = "YourISP" # ISP
+# æ ¡å›­ç½‘è¯·ç•™ç©º
+# ä¸­å›½ç§»åŠ¨ unicom
+# ä¸­å›½è”é€š cmcc
+# ä¸­å›½ç”µä¿¡ telecom
+$JumpIP = "10.1.1.1" # éè®¤è¯æœåŠ¡å™¨åœ°å€ 
 
 
 
-## ½«ÃÜÂë×ª»»Îª Base64 ±àÂë
-# ½«×Ö·û´®×ª»»Îª×Ö½ÚÊı×é
+## å°†å¯†ç è½¬æ¢ä¸º Base64 ç¼–ç 
+# å°†å­—ç¬¦ä¸²è½¬æ¢ä¸ºå­—èŠ‚æ•°ç»„
 $byteArray = [System.Text.Encoding]::UTF8.GetBytes($Password)
-# ½«×Ö½ÚÊı×é±àÂëÎª Base64 ×Ö·û´®
+# å°†å­—èŠ‚æ•°ç»„ç¼–ç ä¸º Base64 å­—ç¬¦ä¸²
 $base64_Password_WithPadding = [System.Convert]::ToBase64String($byteArray)
-# È¥³ıÌî³ä×Ö·û '='
+# å»é™¤å¡«å……å­—ç¬¦ '='
 $base64_Password = $base64_Password_WithPadding -replace '=', ''
 
 while (1){
-# Ö´ĞĞ°¢ÀïDNS ping ÃüÁî²¢²¶»ñÊä³ö
+# æ‰§è¡Œé˜¿é‡ŒDNS ping å‘½ä»¤å¹¶æ•è·è¾“å‡º
 $pingResult = ping -n 3 -w 80 223.5.5.5
 
-# Êä³ö ping ÃüÁîµÄ½á¹û
+# è¾“å‡º ping å‘½ä»¤çš„ç»“æœ
 Write-Output $pingResult
 
-# Ê¹ÓÃÕıÔò±í´ïÊ½Æ¥Åä ¶ªÊ§µÄ"100%" 
+# ä½¿ç”¨æ­£åˆ™è¡¨è¾¾å¼åŒ¹é… ä¸¢å¤±çš„"100%" 
 $result = [regex]::Matches($pingResult, '100%')
 
 
@@ -44,11 +44,11 @@ if($result.Success)
 Write-Output "Fail Ping! Try Auto Connecting..."
 
 
-# ´´½¨Ò»¸ö Web ÇëÇó»á»°
+# åˆ›å»ºä¸€ä¸ª Web è¯·æ±‚ä¼šè¯
 $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
 $session.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
 
-# ·¢Æğ HTTP ÇëÇó Á¬½Óµ½JumpIP(·ÇÈÏÖ¤·şÎñÆ÷µØÖ·)À´»ñÈ¡wlan userºÍwlan acµÄ²ÎÊı
+# å‘èµ· HTTP è¯·æ±‚ è¿æ¥åˆ°JumpIP(éè®¤è¯æœåŠ¡å™¨åœ°å€)æ¥è·å–wlan userå’Œwlan acçš„å‚æ•°
 $response = Invoke-WebRequest -Uri "http://$JumpIP/" `
 -WebSession $session `
 -Headers @{
@@ -58,29 +58,29 @@ $response = Invoke-WebRequest -Uri "http://$JumpIP/" `
     "Upgrade-Insecure-Requests"="1"
 } -UseBasicParsing
 
-# Êä³ö×îÖÕµÄÖØ¶¨ÏòºóµÄÁ´½Ó
+# è¾“å‡ºæœ€ç»ˆçš„é‡å®šå‘åçš„é“¾æ¥
 #Write-Output "Final URL: $($response.BaseResponse.ResponseUri.AbsoluteUri)"
 
-#ÌáÈ¡²ÎÊı
+#æå–å‚æ•°
 
-# Ô­Ê¼ URL
+# åŸå§‹ URL
 $url_redirect = "$($response.BaseResponse.ResponseUri.AbsoluteUri)"
 
-# ¶¨ÒåÕıÔò±í´ïÊ½À´ÌáÈ¡¸÷¸ö²ÎÊıµÄÖµ
+# å®šä¹‰æ­£åˆ™è¡¨è¾¾å¼æ¥æå–å„ä¸ªå‚æ•°çš„å€¼
 $regex = [regex]'\bwlanuserip=(?<wlan_user_ip>[^&]+)&.*wlanacname=(?<wlan_ac_name>[^&]+)&.*wlanacip=(?<wlan_ac_ip>[^&]+)&.*wlanusermac=(?<wlan_user_mac>[^&]+)'
 
-# Ê¹ÓÃÕıÔò±í´ïÊ½½øĞĞÆ¥Åä
+# ä½¿ç”¨æ­£åˆ™è¡¨è¾¾å¼è¿›è¡ŒåŒ¹é…
 if ($matches = $regex.Match($url_redirect)) {
-    # ÌáÈ¡Æ¥ÅäµÄÖµ
+    # æå–åŒ¹é…çš„å€¼
     $wlan_user_ip = $matches.Groups['wlan_user_ip'].Value
     $wlan_user_mac_raw = $matches.Groups['wlan_user_mac'].Value
     $wlan_ac_ip = $matches.Groups['wlan_ac_ip'].Value
     $wlan_ac_name = $matches.Groups['wlan_ac_name'].Value
-    # È¥³ımacµØÖ·ÖĞµÄÁ¬×Ö·û
+    # å»é™¤macåœ°å€ä¸­çš„è¿å­—ç¬¦
     $wlan_user_mac = $wlan_user_mac_raw -replace '-', ''
 
 
-    # Êä³öÌáÈ¡µÄĞÅÏ¢
+    # è¾“å‡ºæå–çš„ä¿¡æ¯
     # [PSCustomObject]@{
     #     wlan_user_ip = $wlan_user_ip
     #     wlan_user_mac = $wlan_user_mac
@@ -88,14 +88,14 @@ if ($matches = $regex.Match($url_redirect)) {
     #     wlan_ac_name = $wlan_ac_name
     # }
 } else {
-    Write-Output "URL ÖĞÎ´ÕÒµ½Æ¥ÅäµÄĞÅÏ¢."
+    Write-Output "URL ä¸­æœªæ‰¾åˆ°åŒ¹é…çš„ä¿¡æ¯."
 }
 
-# Êä³ö×îÖÕµÄµÇÂ¼ÇëÇóuri
+# è¾“å‡ºæœ€ç»ˆçš„ç™»å½•è¯·æ±‚uri
 #Write-Output "http://10.0.1.5:801/eportal/portal/login?callback=dr1003&login_method=1&user_account=%2C0%2C$YourID%40$YourISP&user_password=$base64_Password%3D&wlan_user_ip=$wlan_user_ip&wlan_user_ipv6=&wlan_user_mac=$wlan_user_mac&wlan_ac_ip=$wlan_ac_ip&wlan_ac_name=$wlan_ac_name&jsVersion=4.2&terminal_type=1&lang=zh-cn&v=3713&lang=zh"
 
 
-#ÏòDrcom·¢ËÍµÇÂ¼ÇëÇó
+#å‘Drcomå‘é€ç™»å½•è¯·æ±‚
 $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
 $session.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
 Invoke-WebRequest -UseBasicParsing -Uri "http://10.0.1.5:801/eportal/portal/login?callback=dr1003&login_method=1&user_account=%2C0%2C$YourID%40$YourISP&user_password=$base64_Password%3D&wlan_user_ip$wlan_user_ip&wlan_user_ipv6=&wlan_user_mac=$wlan_user_mac&wlan_ac_ip=$wlan_ac_ip&wlan_ac_name=$wlan_ac_name&jsVersion=4.2&terminal_type=1&lang=zh-cn&v=3713&lang=zh" `
