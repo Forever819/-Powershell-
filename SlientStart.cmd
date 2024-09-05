@@ -1,0 +1,1 @@
+powershell.exe -command "Start-Process -WindowStyle hidden -FilePath '.\AutoNet.ps1'"
