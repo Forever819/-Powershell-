@@ -12,8 +12,8 @@ $YourID = "YourID" # 学号
 $Password = "YourPassword" # 密码
 $YourISP = "YourISP" # ISP
 # 校园网请留空
-# 中国移动 unicom
-# 中国联通 cmcc
+# 中国移动 cmcc
+# 中国联通 unicom
 # 中国电信 telecom
 $JumpIP = "10.1.1.1" # 非认证服务器地址 
 
